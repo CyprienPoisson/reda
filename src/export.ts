@@ -11,7 +11,7 @@ const ws = wb.addWorksheet("Accès", {
   views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
-const exportColumns = [{ header: "Partage", key: "share", width: 20 }];
+const exportColumns = [{ header: "Partage", key: "share", width: 25 }];
 const usernames = Object.keys(data.users).sort(alphasort);
 for (const username of usernames) {
   exportColumns.push({
@@ -22,11 +22,19 @@ for (const username of usernames) {
 }
 ws.columns = exportColumns;
 
-const headers = ws.getRow(1);
-headers.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
+const hHeaders = ws.getRow(1);
+hHeaders.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
   cell.font = { bold: true };
   cell.border = {
     bottom: { style: "thin", color: { argb: "FF333333" } },
+  };
+});
+
+const vHeaders = ws.getColumn(1);
+vHeaders.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
+  cell.font = { bold: true };
+  cell.border = {
+    right: { style: "thin", color: { argb: "FF333333" } },
   };
 });
 
