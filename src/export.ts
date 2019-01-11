@@ -1,6 +1,7 @@
 import * as ExcelJS from "exceljs";
 import * as fs from "fs";
 import alphasort from "./alphasort";
+import { IPermissions } from "./interfaces";
 import getSynoData from "./synodata";
 
 const data = getSynoData();
@@ -16,7 +17,7 @@ for (const username of usernames) {
   exportColumns.push({
     header: username,
     key: username.toLowerCase(),
-    width: 20,
+    width: 7,
   });
 }
 ws.columns = exportColumns;
@@ -29,7 +30,26 @@ headers.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
   };
 });
 
-// const rows = this.selection.map((itemKey) => this.buildItemRow(itemKey));
-// ws.addRows(rows);
+const rows = Object.keys(data.shares)
+  .sort(alphasort)
+  .map((shareName) => {
+    const row = [shareName];
+    for (const username of usernames) {
+      let access = "";
+      const permissions: IPermissions = data.shares[shareName].permissions;
+      if (permissions.readWrite.indexOf(username) !== -1) {
+        access = "RW";
+      } else if (permissions.readOnly.indexOf(username) !== -1) {
+        access = "RO";
+      } else if (permissions.custom.indexOf(username) !== -1) {
+        access = "CA";
+      } else if (permissions.none.indexOf(username) !== -1) {
+        access = "NA";
+      }
+      row.push(access);
+    }
+  });
+
+ws.addRows(rows);
 
 wb.xlsx.writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx");
