@@ -157,7 +157,7 @@ ws = wb.addWorksheet("Par utilisateur", {
 });
 
 ws.columns = [
-  { header: "Utilisateur", key: "user", width: 35 },
+  { header: "Utilisateur", key: "user", width: 15 },
   { header: "Accès", key: "access", width: 7 },
   { header: "Partages", key: "shares", width: 200 },
 ];
