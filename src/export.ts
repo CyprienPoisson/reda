@@ -1,52 +1,24 @@
 import * as ExcelJS from "exceljs";
 import * as fs from "fs";
+import alphasort from "./alphasort";
 import getSynoData from "./synodata";
 
-const exportColumns = [
-  { header: "Id", key: "id", width: 6 },
-  { header: "Batiment", key: "building", width: 20 },
-  { header: "Niveau", key: "level", width: 20 },
-  { header: "Salle", key: "room", width: 20 },
-  { header: "Service", key: "department", width: 20 },
-  { header: "Catégorie", key: "category", width: 20 },
-  { header: "Sous-catégorie", key: "subCategory", width: 20 },
-  {
-    header: "Date d'achat",
-    key: "purchasedAt",
-    style: { numFmt: "dd/mm/yyyy" },
-    width: 12,
-  },
-  { header: "Durée de garantie", key: "warrantyDuration", width: 8 },
-  { header: "État", key: "condition", width: 6 },
-  { header: "Référence du contrat", key: "contractReference", width: 8 },
-  {
-    header: "Coût HT",
-    key: "cost",
-    style: { numFmt: '#,##0.00" €";[Red]-#,##0.00" €"' },
-    width: 12,
-  },
-  {
-    header: "Coût TTC",
-    key: "atiCost",
-    style: { numFmt: '#,##0.00" €";[Red]-#,##0.00" €"' },
-    width: 12,
-  },
-  {
-    header: "Taux de TVA",
-    key: "vatRate",
-    style: { numFmt: "#,##0.00" },
-    width: 8,
-  },
-  { header: "Durée d'amortissement", key: "depreciationPeriod", width: 8 },
-];
-
-// const data = JSON.stringify(getSynoData());
+const data = getSynoData();
 
 const wb = new ExcelJS.Workbook();
-const ws = wb.addWorksheet("items", {
-  views: [{ state: "frozen", ySplit: 1 }],
+const ws = wb.addWorksheet("Accès", {
+  views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
+const exportColumns = [{ header: "Partage", key: "share", width: 20 }];
+const usernames = Object.keys(data.users).sort(alphasort);
+for (const username of usernames) {
+  exportColumns.push({
+    header: username,
+    key: username.toLowerCase(),
+    width: 20,
+  });
+}
 ws.columns = exportColumns;
 
 const headers = ws.getRow(1);
