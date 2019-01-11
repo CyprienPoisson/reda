@@ -15,7 +15,7 @@ let ws = wb.addWorksheet("Matrice", {
   views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
-const matrixHeaders = [{ header: "Partage", key: "share", width: 25 }];
+const matrixHeaders = [{ header: "", key: "share", width: 25 }];
 for (const username of usernames) {
   matrixHeaders.push({
     header: username,
@@ -121,9 +121,15 @@ for (const shareName of shareNames) {
   const first = ws.addRow(rowRW);
   const last = ws.addRow(rowRO);
   ws.mergeCells([first.getCell(1).address, last.getCell(1).address].join(":"));
+
   first.getCell(2).fill = fills.RW;
+  first.getCell(2).alignment = { horizontal: "center" };
+
   first.getCell(3).fill = fills.RW;
+
   last.getCell(2).fill = fills.RO;
+  last.getCell(2).alignment = { horizontal: "center" };
+
   last.getCell(3).fill = fills.RO;
   last.border = {
     bottom: { style: "thin" },
@@ -143,6 +149,7 @@ ws.getColumn(1).font = { bold: true };
 ws.getColumn(1).border = {
   right: { style: "thin", color: { argb: "FF333333" } },
 };
+ws.getColumn(1).alignment = { vertical: "middle" };
 
 // BY USER
 ws = wb.addWorksheet("Par utilisateur", {
