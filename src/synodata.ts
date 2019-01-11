@@ -15,7 +15,12 @@ function getField(source: string, fieldname: string) {
 
 function parseACL(list: string) {
   return list.split(",").filter((i) => {
-    return typeof i === "string" && i.length > 0;
+    return (
+      typeof i === "string" &&
+      i.length > 0 &&
+      i !== "@administrators" &&
+      i !== "admin"
+    );
   });
 }
 
