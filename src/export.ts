@@ -112,7 +112,7 @@ ws = wb.addWorksheet("Par partage", {
 ws.columns = [
   { header: "Partage", key: "share", width: 25 },
   { header: "Accès", key: "access", width: 5 },
-  { header: "Utilisateurs", key: "users", width: 300 },
+  { header: "Utilisateurs", key: "users", width: 20 },
 ];
 
 for (const shareName of shareNames) {
