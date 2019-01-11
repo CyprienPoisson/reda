@@ -26,20 +26,16 @@ for (const username of usernames) {
 ws.columns = matrixHeaders;
 
 const hHeaders = ws.getRow(1);
-hHeaders.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
-  cell.font = { bold: true };
-  cell.border = {
-    bottom: { style: "thin", color: { argb: "FF333333" } },
-  };
-});
+hHeaders.font = { bold: true };
+hHeaders.border = {
+  bottom: { style: "thin", color: { argb: "FF333333" } },
+};
 
 const vHeaders = ws.getColumn(1);
-vHeaders.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
-  cell.font = { bold: true };
-  cell.border = {
-    right: { style: "thin", color: { argb: "FF333333" } },
-  };
-});
+vHeaders.font = { bold: true };
+vHeaders.border = {
+  right: { style: "thin", color: { argb: "FF333333" } },
+};
 
 const rows = shareNames.map((shareName) => {
   const row = [shareName];
@@ -107,12 +103,12 @@ ws.eachRow((row, rowNumber) => {
 
 // BY SHARE
 ws = wb.addWorksheet("Par partage", {
-  views: [{ state: "frozen", xSplit: 1 }],
+  views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
 ws.columns = [
-  { header: "Partage", key: "share", width: 25 },
-  { header: "Accès", key: "access", width: 5 },
+  { header: "Partage", key: "share", width: 35 },
+  { header: "Accès", key: "access", width: 7 },
   { header: "Utilisateurs", key: "users", width: 300 },
 ];
 
@@ -122,16 +118,24 @@ for (const shareName of shareNames) {
   const roUsers = permissions.readOnly.sort(alphasort).join(" ,");
   const rowRW = [shareName, "RW", rwUsers];
   const rowRO = ["", "RO", roUsers];
-  ws.addRow(rowRW);
+  const first = ws.addRow(rowRW);
   const last = ws.addRow(rowRO);
+  first.getCell(2).fill = fills.RW;
+  first.getCell(3).fill = fills.RW;
+  last.getCell(2).fill = fills.RO;
+  last.getCell(3).fill = fills.RO;
   last.border = {
     bottom: { style: "thin" },
   };
 }
 
+ws.getColumn(1).border = {
+  right: { style: "thin" },
+};
+
 // BY USER
 ws = wb.addWorksheet("Par utilisateur", {
-  views: [{ state: "frozen", xSplit: 1 }],
+  views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
 console.log("Writing file...");
