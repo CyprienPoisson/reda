@@ -91,19 +91,14 @@ const fills: { [index: string]: ExcelJS.Fill } = {
 ws.addRows(rows);
 
 ws.eachRow((row, rowNumber) => {
-  console.log("Adding style for row " + rowNumber);
   if (rowNumber === 1) {
     return;
   }
   row.eachCell((cell, colNumber) => {
-    console.log("Adding style for col " + colNumber);
     if (colNumber === 1) {
       return;
     }
-    console.log("Cell contains " + cell.value);
     if (typeof cell.value === "string") {
-      console.log("Adding fill for this cell");
-      console.log(fills[cell.value]);
       cell.fill = fills[cell.value];
     }
   });
