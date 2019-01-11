@@ -15,14 +15,15 @@ let ws = wb.addWorksheet("Matrice", {
   views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
-ws.columns = [{ header: "Partage", key: "share", width: 25 }];
+const matrixHeaders = [{ header: "Partage", key: "share", width: 25 }];
 for (const username of usernames) {
-  ws.columns.push({
+  matrixHeaders.push({
     header: username,
     key: username.toLowerCase(),
     width: 7,
   });
 }
+ws.columns = matrixHeaders;
 
 const hHeaders = ws.getRow(1);
 hHeaders.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
