@@ -109,7 +109,7 @@ ws = wb.addWorksheet("Par partage", {
 ws.columns = [
   { header: "Partage", key: "share", width: 35 },
   { header: "Accès", key: "access", width: 7 },
-  { header: "Utilisateurs", key: "users", width: 300 },
+  { header: "Utilisateurs", key: "users", width: 150 },
 ];
 
 for (const shareName of shareNames) {
@@ -156,6 +156,64 @@ ws = wb.addWorksheet("Par utilisateur", {
   views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
+ws.columns = [
+  { header: "Utilisateur", key: "user", width: 35 },
+  { header: "Accès", key: "access", width: 7 },
+  { header: "Partages", key: "shares", width: 200 },
+];
+
+for (const username of usernames) {
+  const rwShares = shareNames
+    .filter((shareName) => {
+      const permissions: IPermissions = data.shares[shareName].permissions;
+      return permissions.readWrite.indexOf(username) !== -1;
+    })
+    .sort(alphasort)
+    .join(" ,");
+  const roShares = shareNames
+    .filter((shareName) => {
+      const permissions: IPermissions = data.shares[shareName].permissions;
+      return permissions.readOnly.indexOf(username) !== -1;
+    })
+    .sort(alphasort)
+    .join(" ,");
+
+  const rowRW = [username, "RW", rwShares];
+  const rowRO = ["", "RO", roShares];
+  const first = ws.addRow(rowRW);
+  const last = ws.addRow(rowRO);
+  ws.mergeCells([first.getCell(1).address, last.getCell(1).address].join(":"));
+
+  first.getCell(2).fill = fills.RW;
+  first.getCell(2).alignment = { horizontal: "center" };
+
+  first.getCell(3).fill = fills.RW;
+
+  last.getCell(2).fill = fills.RO;
+  last.getCell(2).alignment = { horizontal: "center" };
+
+  last.getCell(3).fill = fills.RO;
+  last.border = {
+    bottom: { style: "thin" },
+  };
+}
+
+ws.getColumn(1).border = {
+  right: { style: "thin" },
+};
+
+ws.getRow(1).font = { bold: true };
+ws.getRow(1).border = {
+  bottom: { style: "thin", color: { argb: "FF333333" } },
+};
+
+ws.getColumn(1).font = { bold: true };
+ws.getColumn(1).border = {
+  right: { style: "thin", color: { argb: "FF333333" } },
+};
+ws.getColumn(1).alignment = { vertical: "middle" };
+
+// OUTPUT
 console.log("Writing file...");
 wb.xlsx
   .writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx")
