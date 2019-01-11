@@ -133,4 +133,8 @@ ws = wb.addWorksheet("Par utilisateur", {
   views: [{ state: "frozen", xSplit: 1 }],
 });
 
-wb.xlsx.writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx");
+wb.xlsx
+  .writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx")
+  .then(() => {
+    console.log("DONE.");
+  });
