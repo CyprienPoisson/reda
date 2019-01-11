@@ -61,28 +61,27 @@ const rows = Object.keys(data.shares)
 
 const fills: { [index: string]: ExcelJS.Fill } = {
   "-": {
-    bgColor: { argb: "88FF0000" },
-    fgColor: { argb: "88FF0000" },
+    fgColor: { argb: "FFeeeeee" },
     pattern: "solid",
     type: "pattern",
   },
   "CA": {
-    fgColor: { argb: "8800FF00" },
+    fgColor: { argb: "FFFF9800" },
     pattern: "solid",
     type: "pattern",
   },
   "NA": {
-    fgColor: { argb: "880000FF" },
+    fgColor: { argb: "FFeeeeee" },
     pattern: "solid",
     type: "pattern",
   },
   "RO": {
-    fgColor: { argb: "88000000" },
+    fgColor: { argb: "FFBBDEFB" },
     pattern: "solid",
     type: "pattern",
   },
   "RW": {
-    fgColor: { argb: "88FFFFFF" },
+    fgColor: { argb: "88AED581" },
     pattern: "solid",
     type: "pattern",
   },
