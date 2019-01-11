@@ -21,3 +21,16 @@ export interface IPermissions {
   readOnly: string[];
   readWrite: string[];
 }
+
+export interface IUserList {
+  [index: string]: IUser;
+}
+
+export interface IShareList {
+  [index: string]: IShare;
+}
+
+export interface ISynoData {
+  users: IUserList;
+  shares: IShareList;
+}

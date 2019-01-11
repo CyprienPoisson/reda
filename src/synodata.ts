@@ -1,5 +1,5 @@
 import { execSync } from "child_process";
-import { IShare, IUser } from "./interfaces";
+import { IShare, IShareList, ISynoData, IUser, IUserList } from "./interfaces";
 
 function getField(source: string, fieldname: string) {
   const rx = `^.*${fieldname}.*\\[(.*)\\]$`;
@@ -13,13 +13,12 @@ function getField(source: string, fieldname: string) {
   }
 }
 
-function parseACL(list: string) {
-  return list.split(",").filter((i) => {
+function parseACL(list: string, data: ISynoData) {
+  return list.split(",").filter((username) => {
     return (
-      typeof i === "string" &&
-      i.length > 0 &&
-      i !== "@administrators" &&
-      i !== "admin"
+      typeof username === "string" &&
+      username.length > 0 &&
+      data.users[username] !== undefined
     );
   });
 }
@@ -37,13 +36,13 @@ function getUser(username: string): IUser {
   };
 }
 
-function getUsers(): any {
+function getUsers(data: ISynoData): void {
   const users = execSync("synouser --enum all", {
     encoding: "utf8",
   }).match(/^(.+)$/gm);
 
   if (users === null) {
-    return {};
+    return;
   }
 
   do {
@@ -56,22 +55,24 @@ function getUsers(): any {
     }
   } while (true);
 
-  return users.reduce((s: any, i: string) => {
-    if (i === "admin" || i === "guest") {
-      return s;
+  data.users = users.reduce((list: IUserList, username: string) => {
+    const user = getUser(username);
+    if (username === "admin" || username === "guest" || user.isExpired) {
+      return list;
     }
-    s[i] = getUser(i);
-    return s;
+
+    list[username] = user;
+    return list;
   }, {});
 }
 
-function getShares(): any {
+function getShares(data: ISynoData): void {
   const shares = execSync("synoshare --enum local", {
     encoding: "utf8",
   }).match(/^(.+)$/gm);
 
   if (shares === null) {
-    return {};
+    return;
   }
 
   do {
@@ -81,13 +82,13 @@ function getShares(): any {
     }
   } while (true);
 
-  return shares.reduce((s: any, i: string) => {
-    s[i] = getShare(i);
-    return s;
+  data.shares = shares.reduce((list: IShareList, shareName: string) => {
+    list[shareName] = getShare(shareName, data);
+    return list;
   }, {});
 }
 
-function getShare(sharename: string): IShare {
+function getShare(sharename: string, data: ISynoData): IShare {
   const share: string = execSync(`synoshare --get '${sharename}'`, {
     encoding: "utf8",
   });
@@ -103,18 +104,22 @@ function getShare(sharename: string): IShare {
     name: getField(share, "Name"),
     path: getField(share, "Path"),
     permissions: {
-      custom: parseACL(getField(acls, "ACL Custom List")),
-      none: parseACL(getField(acls, "ACL NA List")),
-      readOnly: parseACL(getField(acls, "ACL RO List")),
-      readWrite: parseACL(getField(acls, "ACL RW List")),
+      custom: parseACL(getField(acls, "ACL Custom List"), data),
+      none: parseACL(getField(acls, "ACL NA List"), data),
+      readOnly: parseACL(getField(acls, "ACL RO List"), data),
+      readWrite: parseACL(getField(acls, "ACL RW List"), data),
     },
     usesACL: getField(share, "ACL") === "yes",
   };
 }
 
-export default function getSynoData() {
-  return {
-    shares: getShares(),
-    users: getUsers(),
+export default function getSynoData(): ISynoData {
+  const data = {
+    shares: {},
+    users: {},
   };
+
+  getUsers(data);
+  getShares(data);
+  return data;
 }
