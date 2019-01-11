@@ -59,8 +59,9 @@ const rows = Object.keys(data.shares)
     return row;
   });
 
-const fills = {
+const fills: { [index: string]: ExcelJS.Fill } = {
   "-": {
+    bgColor: { argb: "88FF0000" },
     fgColor: { argb: "88FF0000" },
     pattern: "none",
     type: "pattern",
@@ -94,7 +95,9 @@ ws.eachRow((row, rowNumber) => {
     if (colNumber === 1) {
       return;
     }
-    cell.fill = fills[cell.value];
+    if (typeof cell.value === "string") {
+      cell.fill = fills[cell.value];
+    }
   });
 });
 
