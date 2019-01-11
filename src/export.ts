@@ -133,8 +133,13 @@ ws = wb.addWorksheet("Par utilisateur", {
   views: [{ state: "frozen", xSplit: 1 }],
 });
 
+console.log("Writing file...");
 wb.xlsx
   .writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx")
   .then(() => {
     console.log("DONE.");
+  })
+  .catch((e) => {
+    console.log("Failed to write file.");
+    console.log(e);
   });
