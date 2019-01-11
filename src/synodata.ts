@@ -52,6 +52,9 @@ function getUsers(): any {
   } while (true);
 
   return users.reduce((s: any, i: string) => {
+    if (i === "admin" || i === "guest") {
+      return s;
+    }
     s[i] = getUser(i);
     return s;
   }, {});
