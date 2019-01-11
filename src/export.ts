@@ -120,6 +120,7 @@ for (const shareName of shareNames) {
   const rowRO = ["", "RO", roUsers];
   const first = ws.addRow(rowRW);
   const last = ws.addRow(rowRO);
+  ws.mergeCells([first.getCell(1).address, last.getCell(1).address].join(":"));
   first.getCell(2).fill = fills.RW;
   first.getCell(3).fill = fills.RW;
   last.getCell(2).fill = fills.RO;
@@ -131,6 +132,16 @@ for (const shareName of shareNames) {
 
 ws.getColumn(1).border = {
   right: { style: "thin" },
+};
+
+ws.getRow(1).font = { bold: true };
+ws.getRow(1).border = {
+  bottom: { style: "thin", color: { argb: "FF333333" } },
+};
+
+ws.getColumn(1).font = { bold: true };
+ws.getColumn(1).border = {
+  right: { style: "thin", color: { argb: "FF333333" } },
 };
 
 // BY USER
