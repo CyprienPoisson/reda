@@ -103,6 +103,7 @@ ws.eachRow((row, rowNumber) => {
     console.log("Cell contains " + cell.value);
     if (typeof cell.value === "string") {
       console.log("Adding fill for this cell");
+      console.log(fills[cell.value]);
       cell.fill = fills[cell.value];
     }
   });
