@@ -48,6 +48,7 @@ const rows = Object.keys(data.shares)
       }
       row.push(access);
     }
+    return row;
   });
 
 ws.addRows(rows);
