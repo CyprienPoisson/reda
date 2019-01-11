@@ -87,6 +87,9 @@ const fills: { [index: string]: ExcelJS.Fill } = {
     type: "pattern",
   },
 };
+
+ws.addRows(rows);
+
 ws.eachRow((row, rowNumber) => {
   console.log("Adding style for row " + rowNumber);
   if (rowNumber === 1) {
@@ -104,7 +107,5 @@ ws.eachRow((row, rowNumber) => {
     }
   });
 });
-
-ws.addRows(rows);
 
 wb.xlsx.writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx");
