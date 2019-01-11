@@ -35,7 +35,7 @@ const rows = Object.keys(data.shares)
   .map((shareName) => {
     const row = [shareName];
     for (const username of usernames) {
-      let access = "";
+      let access = "-";
       const permissions: IPermissions = data.shares[shareName].permissions;
       if (permissions.readWrite.indexOf(username) !== -1) {
         access = "RW";
