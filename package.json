@@ -8,7 +8,9 @@
     "tslint": "^5.12.0",
     "typescript": "^3.2.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "^10.12.18"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
