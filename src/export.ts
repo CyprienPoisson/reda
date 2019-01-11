@@ -114,8 +114,8 @@ ws.columns = [
 
 for (const shareName of shareNames) {
   const permissions = data.shares[shareName].permissions;
-  const rwUsers = permissions.readWrite.sort(alphasort).join(" ,");
-  const roUsers = permissions.readOnly.sort(alphasort).join(" ,");
+  const rwUsers = permissions.readWrite.sort(alphasort).join(", ");
+  const roUsers = permissions.readOnly.sort(alphasort).join(", ");
   const rowRW = [shareName, "RW", rwUsers];
   const rowRO = ["", "RO", roUsers];
   const first = ws.addRow(rowRW);
@@ -169,14 +169,14 @@ for (const username of usernames) {
       return permissions.readWrite.indexOf(username) !== -1;
     })
     .sort(alphasort)
-    .join(" ,");
+    .join(", ");
   const roShares = shareNames
     .filter((shareName) => {
       const permissions: IPermissions = data.shares[shareName].permissions;
       return permissions.readOnly.indexOf(username) !== -1;
     })
     .sort(alphasort)
-    .join(" ,");
+    .join(", ");
 
   const rowRW = [username, "RW", rwShares];
   const rowRO = ["", "RO", roShares];
