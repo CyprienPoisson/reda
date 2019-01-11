@@ -15,15 +15,14 @@ let ws = wb.addWorksheet("Matrice", {
   views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
-const exportColumns = [{ header: "Partage", key: "share", width: 25 }];
+ws.columns = [{ header: "Partage", key: "share", width: 25 }];
 for (const username of usernames) {
-  exportColumns.push({
+  ws.columns.push({
     header: username,
     key: username.toLowerCase(),
     width: 7,
   });
 }
-ws.columns = exportColumns;
 
 const hHeaders = ws.getRow(1);
 hHeaders.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
@@ -109,6 +108,12 @@ ws.eachRow((row, rowNumber) => {
 ws = wb.addWorksheet("Par partage", {
   views: [{ state: "frozen", xSplit: 1 }],
 });
+
+ws.columns = [
+  { header: "Partage", key: "share", width: 25 },
+  { header: "Accès", key: "access", width: 5 },
+  { header: "Utilisateurs", key: "users", width: 300 },
+];
 
 for (const shareName of shareNames) {
   const permissions = data.shares[shareName].permissions;
