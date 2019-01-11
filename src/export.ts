@@ -112,8 +112,10 @@ ws = wb.addWorksheet("Par partage", {
 
 for (const shareName of shareNames) {
   const permissions = data.shares[shareName].permissions;
-  const rowRW = [shareName, "RW", ...permissions.readWrite.join(", ")];
-  const rowRO = ["", "RO", ...permissions.readWrite.join(", ")];
+  const rwUsers = permissions.readWrite.sort(alphasort);
+  const roUsers = permissions.readOnly.sort(alphasort);
+  const rowRW = [shareName, "RW", ...rwUsers];
+  const rowRO = ["", "RO", ...roUsers];
   ws.addRow(rowRW);
   const last = ws.addRow(rowRO);
   last.border = {
