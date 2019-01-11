@@ -59,6 +59,45 @@ const rows = Object.keys(data.shares)
     return row;
   });
 
+const fills = {
+  "-": {
+    fgColor: { argb: "88FF0000" },
+    pattern: "none",
+    type: "pattern",
+  },
+  "CA": {
+    fgColor: { argb: "8800FF00" },
+    pattern: "none",
+    type: "pattern",
+  },
+  "NA": {
+    fgColor: { argb: "880000FF" },
+    pattern: "none",
+    type: "pattern",
+  },
+  "RO": {
+    fgColor: { argb: "88000000" },
+    pattern: "none",
+    type: "pattern",
+  },
+  "RW": {
+    fgColor: { argb: "88FFFFFF" },
+    pattern: "none",
+    type: "pattern",
+  },
+};
+ws.eachRow((row, rowNumber) => {
+  if (rowNumber === 1) {
+    return;
+  }
+  row.eachCell((cell, colNumber) => {
+    if (colNumber === 1) {
+      return;
+    }
+    cell.fill = fills[cell.value];
+  });
+});
+
 ws.addRows(rows);
 
 wb.xlsx.writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx");
