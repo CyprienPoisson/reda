@@ -63,27 +63,27 @@ const fills: { [index: string]: ExcelJS.Fill } = {
   "-": {
     bgColor: { argb: "88FF0000" },
     fgColor: { argb: "88FF0000" },
-    pattern: "none",
+    pattern: "solid",
     type: "pattern",
   },
   "CA": {
     fgColor: { argb: "8800FF00" },
-    pattern: "none",
+    pattern: "solid",
     type: "pattern",
   },
   "NA": {
     fgColor: { argb: "880000FF" },
-    pattern: "none",
+    pattern: "solid",
     type: "pattern",
   },
   "RO": {
     fgColor: { argb: "88000000" },
-    pattern: "none",
+    pattern: "solid",
     type: "pattern",
   },
   "RW": {
     fgColor: { argb: "88FFFFFF" },
-    pattern: "none",
+    pattern: "solid",
     type: "pattern",
   },
 };
