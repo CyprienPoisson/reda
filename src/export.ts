@@ -115,7 +115,10 @@ for (const shareName of shareNames) {
   const rowRW = [shareName, "RW", ...permissions.readWrite.join(", ")];
   const rowRO = ["", "RO", ...permissions.readWrite.join(", ")];
   ws.addRow(rowRW);
-  ws.addRow(rowRO);
+  const last = ws.addRow(rowRO);
+  last.border = {
+    bottom: { style: "thin" },
+  };
 }
 
 // BY USER
