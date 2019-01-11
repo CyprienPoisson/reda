@@ -32,4 +32,4 @@ headers.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
 // const rows = this.selection.map((itemKey) => this.buildItemRow(itemKey));
 // ws.addRows(rows);
 
-wb.xlsx.writeFile("testexceljs.xlsx");
+wb.xlsx.writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx");
