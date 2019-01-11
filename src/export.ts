@@ -5,14 +5,17 @@ import { IPermissions } from "./interfaces";
 import getSynoData from "./synodata";
 
 const data = getSynoData();
+const usernames = Object.keys(data.users).sort(alphasort);
+const shareNames = Object.keys(data.shares).sort(alphasort);
 
 const wb = new ExcelJS.Workbook();
-const ws = wb.addWorksheet("Accès", {
+
+// FULL MATRIX
+let ws = wb.addWorksheet("Matrice", {
   views: [{ state: "frozen", xSplit: 1, ySplit: 1 }],
 });
 
 const exportColumns = [{ header: "Partage", key: "share", width: 25 }];
-const usernames = Object.keys(data.users).sort(alphasort);
 for (const username of usernames) {
   exportColumns.push({
     header: username,
@@ -38,26 +41,24 @@ vHeaders.eachCell({ includeEmpty: true }, (cell /*colNumber*/) => {
   };
 });
 
-const rows = Object.keys(data.shares)
-  .sort(alphasort)
-  .map((shareName) => {
-    const row = [shareName];
-    for (const username of usernames) {
-      let access = "-";
-      const permissions: IPermissions = data.shares[shareName].permissions;
-      if (permissions.readWrite.indexOf(username) !== -1) {
-        access = "RW";
-      } else if (permissions.readOnly.indexOf(username) !== -1) {
-        access = "RO";
-      } else if (permissions.custom.indexOf(username) !== -1) {
-        access = "CA";
-      } else if (permissions.none.indexOf(username) !== -1) {
-        access = "NA";
-      }
-      row.push(access);
+const rows = shareNames.map((shareName) => {
+  const row = [shareName];
+  for (const username of usernames) {
+    let access = "-";
+    const permissions: IPermissions = data.shares[shareName].permissions;
+    if (permissions.readWrite.indexOf(username) !== -1) {
+      access = "RW";
+    } else if (permissions.readOnly.indexOf(username) !== -1) {
+      access = "RO";
+    } else if (permissions.custom.indexOf(username) !== -1) {
+      access = "CA";
+    } else if (permissions.none.indexOf(username) !== -1) {
+      access = "NA";
     }
-    return row;
-  });
+    row.push(access);
+  }
+  return row;
+});
 
 const fills: { [index: string]: ExcelJS.Fill } = {
   "-": {
@@ -99,8 +100,27 @@ ws.eachRow((row, rowNumber) => {
     }
     if (typeof cell.value === "string") {
       cell.fill = fills[cell.value];
+      cell.alignment = { vertical: "middle", horizontal: "center" };
     }
   });
+});
+
+// BY SHARE
+ws = wb.addWorksheet("Par partage", {
+  views: [{ state: "frozen", xSplit: 1 }],
+});
+
+for (const shareName of shareNames) {
+  const permissions = data.shares[shareName].permissions;
+  const rowRW = [shareName, "RW", ...permissions.readWrite.join(", ")];
+  const rowRO = ["", "RO", ...permissions.readWrite.join(", ")];
+  ws.addRow(rowRW);
+  ws.addRow(rowRO);
+}
+
+// BY USER
+ws = wb.addWorksheet("Par utilisateur", {
+  views: [{ state: "frozen", xSplit: 1 }],
 });
 
 wb.xlsx.writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx");
