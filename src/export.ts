@@ -216,7 +216,7 @@ ws.getColumn(1).alignment = { vertical: "middle" };
 // OUTPUT
 console.log("Writing file...");
 wb.xlsx
-  .writeFile("/volume21/GROUPE - IT/EXPORT ACCES PARTAGES.xlsx")
+  .writeFile("/volume3/USER - DJO/EXPORT ACCES PARTAGES.xlsx")
   .then(() => {
     console.log("DONE.");
   })
