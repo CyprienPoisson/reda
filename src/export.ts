@@ -213,6 +213,40 @@ ws.getColumn(1).border = {
 };
 ws.getColumn(1).alignment = { vertical: "middle" };
 
+// USERS LIST
+ws = wb.addWorksheet("Utilisateurs", {
+  views: [{ state: "frozen", ySplit: 1 }],
+});
+
+ws.columns = [
+  { header: "ID", key: "user", width: 15 },
+  { header: "Nom complet", key: "fullname", width: 40 },
+  { header: "Email", key: "email", width: 40 },
+  { header: "Actif", key: "active", width: 3 },
+];
+
+for (const username of usernames) {
+  const row = ws.addRow([
+    username,
+    data.users[username].fullname,
+    data.users[username].email,
+    data.users[username].isExpired ? "non" : "oui",
+  ]);
+
+  row.getCell(4).alignment = { horizontal: "center" };
+}
+
+ws.getRow(1).font = { bold: true };
+ws.getRow(1).border = {
+  bottom: { style: "thin", color: { argb: "FF333333" } },
+};
+
+ws.getColumn(1).font = { bold: true };
+ws.getColumn(1).border = {
+  right: { style: "thin", color: { argb: "FF333333" } },
+};
+ws.getColumn(1).alignment = { vertical: "middle" };
+
 // OUTPUT
 console.log("Writing file...");
 wb.xlsx
