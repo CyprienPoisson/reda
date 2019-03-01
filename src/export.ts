@@ -4,6 +4,8 @@ import alphasort from "./alphasort";
 import { IPermissions } from "./interfaces";
 import getSynoData from "./synodata";
 
+const destPath = "set/this/to/path.xlsx";
+
 const data = getSynoData();
 const usernames = Object.keys(data.users).sort(alphasort);
 const shareNames = Object.keys(data.shares).sort(alphasort);
@@ -250,7 +252,7 @@ ws.getColumn(1).alignment = { vertical: "middle" };
 // OUTPUT
 console.log("Writing file...");
 wb.xlsx
-  .writeFile("/volume3/USER - DJO/EXPORT ACCES PARTAGES.xlsx")
+  .writeFile(destPath)
   .then(() => {
     console.log("DONE.");
   })
