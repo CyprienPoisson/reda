@@ -4,7 +4,7 @@ import alphasort from "./alphasort";
 import { IPermissions } from "./interfaces";
 import getSynoData from "./synodata";
 
-const destPath = "set/this/to/path.xlsx";
+const destPath = "/volume3/USER - DJO/EXPORT ACCES PARTAGES.xlsx";
 
 const data = getSynoData();
 const usernames = Object.keys(data.users).sort(alphasort);
